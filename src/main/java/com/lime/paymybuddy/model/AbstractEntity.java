@@ -10,10 +10,9 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @Data
-@MappedSuperclass
+@MappedSuperclass// A mapped superclass is a special type of class that is not persistent itself, but has subclasses that are persistent.
 @EntityListeners(AuditingEntityListener.class)
 public class AbstractEntity implements Serializable {
-
     @Id
     @GeneratedValue
     private Integer id;

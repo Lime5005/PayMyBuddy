@@ -30,7 +30,7 @@ public class User extends AbstractEntity {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user") //Fetch lazy, no fetch until called.
     @JsonIgnore
     private Set<Friends> friends;
 
