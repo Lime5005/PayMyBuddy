@@ -1,8 +1,9 @@
-package com.lime.paymybuddy;
+package com.lime.paymybuddy.service;
 
 import com.lime.paymybuddy.dao.UserRepository;
 import com.lime.paymybuddy.model.User;
 import com.lime.paymybuddy.service.UserServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,10 +15,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class PayMyBuddyApplicationTests {
+class UserServiceTests {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
     private UserRepository userRepository;
@@ -29,33 +30,32 @@ class PayMyBuddyApplicationTests {
         user.setUserName("John");
         user.setEmail("john@gmail.com");
         user.setPassword("123");
-//        userService.save(user);
-        assertEquals("John", userRepository.findUserByEmail("john@gmail.com").getUserName());
+        userService.save(user);
+        assertEquals("John", userRepository.findByEmail("john@gmail.com").getUserName());
     }
 
     @Test
     public void testFindUserById() {
-        Optional<User> user = userService.findById(6);
-        assertEquals("James", user.get().getUserName());
+        Optional<User> user = userService.findById(4);
+        assertEquals("John", user.get().getUserName());
     }
 
     @Test
     public void testFindAllUser() {
         List<User> users = userService.findAll();
-        assertEquals(3, userRepository.findAll().size());
+        assertEquals(1, userRepository.findAll().size());
     }
 
     @Test
     public void testDeleteUserById() {
-        userService.deleteById(7);
-        assertFalse(userRepository.findById(7).isPresent());
+        userService.deleteById(4);
+        assertFalse(userRepository.findById(4).isPresent());
     }
 
     @Test
     public void testDeleteUserByEmail() {
-        userService.deleteUserByEmail("john@gmail.com");
-        User user = userRepository.findUserByEmail("john@gmail.com");
-//        System.out.println(user);
+        userService.deleteByEmail("john@gmail.com");
+        User user = userRepository.findByEmail("john@gmail.com");
         assertNull(user);
     }
 

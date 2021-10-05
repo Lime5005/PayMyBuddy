@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -20,41 +21,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
     @Override
-    @Transactional
     public Optional<User> findById(int id) {
         return userRepository.findById(id);
     }
 
     @Override
-    @Transactional
-    public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override
-    @Transactional
-    public void save(User user) {
+    public Integer save(User user) {
         if (user != null) {
-            userRepository.save(user);
+            return userRepository.save(user).getId();
         }
+        return null;
     }
 
     @Override
-    @Transactional
     public void deleteById(int id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    @Transactional
-    public void deleteUserByEmail(String email) {
-        userRepository.deleteUserByEmail(email);
+    public void deleteByEmail(String email) {
+        userRepository.deleteByEmail(email);
     }
 
 

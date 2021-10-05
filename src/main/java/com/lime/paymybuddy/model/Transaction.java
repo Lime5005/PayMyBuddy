@@ -2,6 +2,7 @@ package com.lime.paymybuddy.model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -37,9 +38,8 @@ public class Transaction extends AbstractEntity {
     @Column(name = "charge")
     private BigDecimal charge;
 
-    @Column(name = "status_trans")
-    @Enumerated(EnumType.STRING)
-    private TransactionStatus statusTrans;
+    @Type(type = "yes_no")
+    private Boolean transacted;
 
     @Override
     public boolean equals(Object o) {
