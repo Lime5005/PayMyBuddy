@@ -18,9 +18,6 @@ import java.util.Objects;
 @Table(name = "transaction")
 public class Transaction extends AbstractEntity {
 
-    @Column(name = "date_trans")
-    private Instant dateTrans;
-
     @ManyToOne
     @JoinColumn(name = "from_account_id")
     private Account fromAccount;

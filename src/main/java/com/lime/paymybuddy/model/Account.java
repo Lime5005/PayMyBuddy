@@ -1,9 +1,11 @@
 package com.lime.paymybuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Set;
 
 @Getter
@@ -19,7 +21,7 @@ public class Account extends AbstractEntity {
     private User user;
 
     @OneToMany
-    @Column(name = "transactions")
+    @JsonIgnore
     private Set<Transaction> transactions;
 
     @Column(name = "balance")

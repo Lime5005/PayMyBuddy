@@ -26,12 +26,11 @@ class UserServiceTests {
     @Test
     public void testSaveUser() {
         User user = new User();
-        user.setCreationDate(new Date().toInstant());
-        user.setUserName("John");
-        user.setEmail("john@gmail.com");
+        user.setUserName("Lily");
+        user.setEmail("lili@gmail.com");
         user.setPassword("123");
         userService.save(user);
-        assertEquals("John", userRepository.findByEmail("john@gmail.com").getUserName());
+        assertEquals("Lily", userRepository.findByEmail("lili@gmail.com").getUserName());
     }
 
     @Test
