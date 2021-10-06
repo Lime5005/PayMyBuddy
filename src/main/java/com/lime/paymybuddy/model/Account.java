@@ -20,7 +20,7 @@ public class Account extends AbstractEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Transaction> transactions;
 

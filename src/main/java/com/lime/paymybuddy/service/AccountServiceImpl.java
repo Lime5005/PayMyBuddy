@@ -6,6 +6,7 @@ import com.lime.paymybuddy.model.Account;
 import com.lime.paymybuddy.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,15 +38,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public Boolean sendMoney(Account fromAcc, Account toAcc, BigDecimal amount) {
         boolean send = false;
         if (fromAcc.getBalance().compareTo(BigDecimal.ONE) > 0
                 && fromAcc.getBalance().compareTo(amount) > 0) {
+            // 1, Transfer:
             fromAcc.setBalance(fromAcc.getBalance().subtract(amount));
             accountRepository.save(fromAcc);
             toAcc.setBalance(toAcc.getBalance().add(amount));
             accountRepository.save(toAcc);
 
+            // 2, Save a record in app:
             Transaction transaction = new Transaction();
             transaction.setFromAccount(fromAcc);
             transaction.setToAccount(toAcc);
@@ -53,6 +57,10 @@ public class AccountServiceImpl implements AccountService {
             transaction.setAmount(amount);
             transaction.setTransacted(true);
             transactionRepository.save(transaction);
+
+            // 3, Save a record for user: //todo: not saved, why?
+            fromAcc.getTransactions().add(transaction);
+
             System.out.println("Transaction is called!");
             send = true;
         }

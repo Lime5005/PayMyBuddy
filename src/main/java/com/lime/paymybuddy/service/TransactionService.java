@@ -10,4 +10,5 @@ public interface TransactionService {
     Integer save(Transaction transaction);
     List<Transaction> findAll();
     Optional<Transaction> findById(int id);
+    List<Transaction> findTransactionsByFromAccount_Id(int id);
 }

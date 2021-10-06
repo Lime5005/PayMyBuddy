@@ -34,4 +34,9 @@ public class TransactionServiceImpl implements TransactionService {
     public Optional<Transaction> findById(int id) {
         return transactionRepository.findById(id);
     }
+
+    @Override
+    public List<Transaction> findTransactionsByFromAccount_Id(int id) {
+        return transactionRepository.findTransactionsByFromAccount_Id(id);
+    }
 }

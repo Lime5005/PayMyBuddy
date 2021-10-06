@@ -34,11 +34,10 @@ public class AccountServiceTests {
     public void testSaveAccount() {
         Account account = new Account();
 
-        account.setBalance(new BigDecimal(1000));
-        User user = userRepository.getById(6);
+        account.setBalance(new BigDecimal(6000));
+        User user = userRepository.getById(14);
         account.setUser(user);
         accountService.save(account);
-        assertEquals(2, accountRepository.findAll().size(), "Size");
         assertEquals(account.getUser().getId(), user.getId());
     }
 
@@ -56,20 +55,26 @@ public class AccountServiceTests {
 
     @Test
     public void testSendMoney() {
-        Account fromAccount = new Account();
+        //Real transfer and save a record.
+        //1, Independent of db data:
+//        Account fromAccount = new Account();
 
-        fromAccount.setBalance(new BigDecimal(8000));
-        fromAccount.setUser(userRepository.getById(1));
-        accountService.save(fromAccount);
+//        fromAccount.setBalance(new BigDecimal(8000));
+//        fromAccount.setUser(userRepository.getById(1));
+//        accountService.save(fromAccount);
+//
+//        Account toAccount = new Account();
+//        toAccount.setBalance(new BigDecimal(0));
+//        toAccount.setUser(userRepository.getById(2));
+//        accountService.save(toAccount);
 
-        Account toAccount = new Account();
-        toAccount.setBalance(new BigDecimal(0));
-        toAccount.setUser(userRepository.getById(2));
-        accountService.save(toAccount);
+        //2, Depend on data from db:
+        Account fromAccount = accountService.findByUserId(14);
+        Account toAccount = accountService.findByUserId(12);
 
-        accountService.sendMoney(fromAccount, toAccount, new BigDecimal(100));
+        accountService.sendMoney(fromAccount, toAccount, new BigDecimal(300));
 
-        assertEquals(0, toAccount.getBalance().compareTo(new BigDecimal(100)));
+        assertEquals(0, toAccount.getBalance().compareTo(new BigDecimal(4300)));
 
     }
 
