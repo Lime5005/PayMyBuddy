@@ -32,9 +32,6 @@ public class Transaction extends AbstractEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "charge")
-    private BigDecimal charge;
-
     @Type(type = "yes_no")
     private Boolean transacted;
 
