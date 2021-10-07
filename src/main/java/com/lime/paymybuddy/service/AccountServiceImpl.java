@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Optional;
 
 @Service
+@Transactional
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
@@ -28,17 +27,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Optional<Account> findById(int id) {
-        return accountRepository.findById(id);
-    }
-
-    @Override
     public Account findByUserId(int id) {
         return accountRepository.findByUserId(id);
     }
 
     @Override
-    @Transactional
     public Boolean sendMoney(Account fromAcc, Account toAcc, BigDecimal amount) {
         boolean send = false;
         if (fromAcc.getBalance().compareTo(BigDecimal.ONE) > 0
@@ -56,10 +49,8 @@ public class AccountServiceImpl implements AccountService {
             transaction.setDescription("");
             transaction.setAmount(amount);
             transaction.setTransacted(true);
+            transaction.setCharge(new BigDecimal("0.005").multiply(amount));
             transactionRepository.save(transaction);
-
-            // 3, Save a record for user: //todo: not saved, why?
-            fromAcc.getTransactions().add(transaction);
 
             System.out.println("Transaction is called!");
             send = true;

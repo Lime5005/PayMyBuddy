@@ -2,20 +2,23 @@ package com.lime.paymybuddy.service;
 
 import com.lime.paymybuddy.dao.UserRepository;
 import com.lime.paymybuddy.model.User;
-import com.lime.paymybuddy.service.UserServiceImpl;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserServiceTests {
+
+    private final User user = new User();
 
     @Autowired
     private UserService userService;
@@ -23,20 +26,25 @@ class UserServiceTests {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    public void testSaveUser() {
-        User user = new User();
-        user.setUserName("Lily");
-        user.setEmail("lili@gmail.com");
-        user.setPassword("123");
-        userService.save(user);
-        assertEquals("Lily", userRepository.findByEmail("lili@gmail.com").getUserName());
+    @BeforeEach
+    public void initUser() {
+
+        user.setUserName("John");
+        user.setEmail("john@gmail.com");
+        user.setPassword("456");
+
+        user.setId(userService.save(user));
+    }
+
+    @AfterEach
+    public void cleanUser() {
+        userRepository.deleteAll();
     }
 
     @Test
     public void testFindUserById() {
-        Optional<User> user = userService.findById(4);
-        assertEquals("John", user.get().getUserName());
+        Optional<User> userFound = userService.findById(user.getId());
+        assertEquals("John", userFound.get().getUserName());
     }
 
     @Test
@@ -47,8 +55,8 @@ class UserServiceTests {
 
     @Test
     public void testDeleteUserById() {
-        userService.deleteById(4);
-        assertFalse(userRepository.findById(4).isPresent());
+        userService.deleteById(user.getId());
+        assertFalse(userRepository.findById(user.getId()).isPresent());
     }
 
     @Test

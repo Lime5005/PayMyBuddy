@@ -6,7 +6,6 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Objects;
 
 @Getter
@@ -28,6 +27,17 @@ public class Transaction extends AbstractEntity {
 
     @Column(name = "amount")
     private BigDecimal amount;
+
+    @Column(name = "charge")
+    private BigDecimal charge;
+
+    public BigDecimal getCharge() {
+        return charge;
+    }
+
+    public void setCharge() {
+        this.charge = this.amount.multiply(new BigDecimal("0.005"));
+    }
 
     @Column(name = "description")
     private String description;
