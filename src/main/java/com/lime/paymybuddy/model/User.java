@@ -26,8 +26,7 @@ public class User extends AbstractEntity {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "account_id")
+    @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Account account;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user") //Fetch lazy, no fetch until called.

@@ -1,29 +1,26 @@
 package com.lime.paymybuddy.service;
 
 import com.lime.paymybuddy.dao.AccountRepository;
+import com.lime.paymybuddy.dao.TransactionRepository;
 import com.lime.paymybuddy.dao.UserRepository;
 import com.lime.paymybuddy.model.Account;
-import com.lime.paymybuddy.model.Transaction;
 import com.lime.paymybuddy.model.User;
-import lombok.val;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AccountServiceTests {
 
-    private final Account fromAccount = new Account();
+    private Account fromAccount = new Account();
 
-    private final User fromUser = new User();
+    private User fromUser = new User();
 
     @Autowired
     private AccountService accountService;
@@ -37,6 +34,9 @@ public class AccountServiceTests {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     @BeforeEach
     public void initAccountsWithUsers() {
         fromAccount.setBalance(new BigDecimal(1000));
@@ -49,19 +49,16 @@ public class AccountServiceTests {
 
     }
 
-    @AfterEach
+    @AfterAll
     public void cleanAccount() {
+        transactionRepository.deleteAll();
         accountRepository.deleteAll();
         userRepository.deleteAll();
     }
 
+    //If @AfterEach, the findByUserId doesn't work; if no order, the sendMoney will not work.
     @Test
-    public void testFindByUserId() {
-        Account account = accountService.findByUserId(fromUser.getId());
-        assertEquals(fromUser.getId(), account.getUser().getId());
-    }
-
-    @Test
+    @Order(1)
     public void testSendMoney() {
         Account toAccount = new Account();
         User toUser = new User();
@@ -75,6 +72,13 @@ public class AccountServiceTests {
 //Test passed when I initiate `transactions = new HashSet<>();` in Account.class;
         accountService.sendMoney(fromAccount, toAccount, new BigDecimal(200));
         assertEquals(0, toAccount.getBalance().compareTo(new BigDecimal(200)));
+    }
+
+    @Test
+    @Order(2)
+    public void testFindByUserId() {
+        Account account = accountService.findByUserId(fromUser.getId());
+        assertEquals(fromUser.getId(), account.getUser().getId());
     }
 
 }
