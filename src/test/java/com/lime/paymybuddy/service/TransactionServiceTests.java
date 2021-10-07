@@ -3,8 +3,13 @@ package com.lime.paymybuddy.service;
 import com.lime.paymybuddy.dao.AccountRepository;
 import com.lime.paymybuddy.dao.TransactionRepository;
 import com.lime.paymybuddy.dao.UserRepository;
+import com.lime.paymybuddy.model.Account;
 import com.lime.paymybuddy.model.Transaction;
+import com.lime.paymybuddy.model.User;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,10 +18,16 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TransactionServiceTests {
+
+    private Account account1 = new Account();
+    private Account account2 = new Account();
+    private User user1 = new User();
+    private User user2 = new User();
+    private Transaction transaction = new Transaction();
 
     @Autowired
     private TransactionService transactionService;
@@ -27,38 +38,62 @@ public class TransactionServiceTests {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Test
-    public void testSavaTransaction() {
-        // Only for record, not real transfer.
-        Transaction transaction = new Transaction();
+    @Autowired
+    private UserService userService;
 
-        transaction.setAmount(new BigDecimal(200));
-        transaction.setFromAccount(accountRepository.findByUserId(12));
-        transaction.setToAccount(accountRepository.findByUserId(14));
-        transaction.setDescription("Test transfer 200 $.");
+    @Autowired
+    private UserRepository userRepository;
+
+    @BeforeEach
+    private void initAccountsAndTransaction() {
+        account1.setBalance(new BigDecimal(100));
+        user1.setUserName("Foo");
+        user1.setEmail("foo@gmail.com");
+        user1.setPassword("123");
+        user1.setId(userService.save(user1));
+        account1.setUser(user1);
+        accountRepository.save(account1);
+
+        account2.setBalance(new BigDecimal(0));
+        user2.setUserName("Bar");
+        user2.setEmail("bar@gmail.com");
+        user2.setPassword("456");
+        user2.setId(userService.save(user2));
+        account2.setUser(user2);
+        accountRepository.save(account2);
+
+        transaction.setAmount(new BigDecimal(20));
+        transaction.setFromAccount(accountRepository.findByUserId(user1.getId()));
+        transaction.setToAccount(accountRepository.findByUserId(user2.getId()));
+        transaction.setDescription("Test transfer 20 $.");
         transactionRepository.save(transaction);
+    }
 
-        assertTrue(transactionRepository.findById(transaction.getId()).isPresent());
-
+    @AfterEach
+    public void cleanAccount() {
+        //This order is very important: first account, then user.
+        transactionRepository.deleteAll();
+        accountRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     public void testFindById() {
-        Optional<Transaction> transaction = transactionService.findById(10);
-        String userName = transaction.get().getToAccount().getUser().getUserName();
-        assertEquals("Lily", userName);
+        Optional<Transaction> transaction = transactionService.findById(this.transaction.getId());
+        String userName = this.transaction.getToAccount().getUser().getUserName();
+        assertEquals(user2.getUserName(), userName);
     }
 
     @Test
     public void testFindAll() {
         List<Transaction> transactions = transactionService.findAll();
-        assertEquals(3, transactions.size());
+        assertEquals(1, transactions.size());
     }
 
     @Test
     public void testFindAllByFromAccountId() {
-        List<Transaction> transactions = transactionService.findTransactionsByFromAccount_Id(16);
-        assertEquals(3, transactions.size());
+        List<Transaction> transactions = transactionService.findTransactionsByFromAccount_Id(this.transaction.getFromAccount().getId());
+        assertEquals(1, transactions.size());
     }
 
 }

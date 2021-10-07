@@ -52,6 +52,9 @@ public class AccountServiceImpl implements AccountService {
             transaction.setCharge(new BigDecimal("0.005").multiply(amount));
             transactionRepository.save(transaction);
 
+            // 3, Save a record for user:
+            fromAcc.getTransactions().add(transaction);
+
             System.out.println("Transaction is called!");
             send = true;
         }
