@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name="user")
-public class User extends AbstractEntity {
+public class DaoUser extends AbstractEntity {
 
     @Column(name = "user_name")
     private String userName;
@@ -29,7 +29,7 @@ public class User extends AbstractEntity {
     @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Account account;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user") //Fetch lazy, no fetch until called.
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user") //Fetch lazy, no fetch until called.
     @JsonIgnore
     private Set<Friends> friends;
 
@@ -37,7 +37,7 @@ public class User extends AbstractEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
+        DaoUser user = (DaoUser) o;
         return Objects.equals(getId(), user.getId());
     }
 

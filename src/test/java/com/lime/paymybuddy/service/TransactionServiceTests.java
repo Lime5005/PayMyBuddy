@@ -5,7 +5,7 @@ import com.lime.paymybuddy.dao.TransactionRepository;
 import com.lime.paymybuddy.dao.UserRepository;
 import com.lime.paymybuddy.model.Account;
 import com.lime.paymybuddy.model.Transaction;
-import com.lime.paymybuddy.model.User;
+import com.lime.paymybuddy.model.DaoUser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,8 +25,8 @@ public class TransactionServiceTests {
 
     private Account account1 = new Account();
     private Account account2 = new Account();
-    private User user1 = new User();
-    private User user2 = new User();
+    private DaoUser user1 = new DaoUser();
+    private DaoUser user2 = new DaoUser();
     private Transaction transaction = new Transaction();
 
     @Autowired

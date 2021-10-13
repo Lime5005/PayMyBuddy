@@ -4,7 +4,7 @@ import com.lime.paymybuddy.dao.AccountRepository;
 import com.lime.paymybuddy.dao.TransactionRepository;
 import com.lime.paymybuddy.dao.UserRepository;
 import com.lime.paymybuddy.model.Account;
-import com.lime.paymybuddy.model.User;
+import com.lime.paymybuddy.model.DaoUser;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +20,7 @@ public class AccountServiceTests {
 
     private Account fromAccount = new Account();
 
-    private User fromUser = new User();
+    private DaoUser fromUser = new DaoUser();
 
     @Autowired
     private AccountService accountService;
@@ -61,7 +61,7 @@ public class AccountServiceTests {
     @Order(1)
     public void testSendMoney() {
         Account toAccount = new Account();
-        User toUser = new User();
+        DaoUser toUser = new DaoUser();
         toAccount.setBalance(new BigDecimal(0));
         toUser.setUserName("Bar");
         toUser.setEmail("bar@gmail.com");

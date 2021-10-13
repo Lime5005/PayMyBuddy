@@ -1,9 +1,8 @@
 package com.lime.paymybuddy.service;
 
 import com.lime.paymybuddy.dao.UserRepository;
-import com.lime.paymybuddy.model.User;
+import com.lime.paymybuddy.model.DaoUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,25 +24,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<DaoUser> findAll() {
         return userRepository.findAll();
     }
 
     @Override
-    public Optional<User> findById(int id) {
+    public Optional<DaoUser> findById(int id) {
         return userRepository.findById(id);
     }
 
     @Override
-    public User findByEmail(String email) {
+    public DaoUser findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
     @Transactional
-    public Integer save(User user) {
+    public Integer save(DaoUser user) { //todo:UserDetailsService will call to save, no need here?
         if (user != null) {
-            User newUser = new User();
+            DaoUser newUser = new DaoUser();
             newUser.setUserName(user.getUserName());
             newUser.setEmail(user.getEmail());
             newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

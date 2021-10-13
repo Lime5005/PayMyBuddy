@@ -1,7 +1,9 @@
 package com.lime.paymybuddy.controller;
 
-import com.lime.paymybuddy.model.User;
+import com.lime.paymybuddy.model.DaoUser;
+import com.lime.paymybuddy.model.dto.UserDto;
 import com.lime.paymybuddy.service.UserService;
+import com.lime.paymybuddy.service.auth.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,9 @@ public class SignupController {
     private UserService userService;
 
     @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
     public SignupController(UserService userService) {
         this.userService = userService;
     }
@@ -27,17 +32,14 @@ public class SignupController {
     }
 
     @PostMapping
-    private String signupUser(@ModelAttribute User user, Model model, RedirectAttributes redirAttrs) {
+    private String signupUser(@ModelAttribute UserDto user, Model model, RedirectAttributes redirAttrs) {
         String signupError = null;
-        User existsUser = userService.findByEmail(user.getEmail());
+        DaoUser existsUser = userService.findByEmail(user.getEmail());
         if (existsUser != null) {
             signupError = "The email already exists";
         }
         if (signupError == null) {
-            Integer id = userService.save(user);
-            if (id == null) {
-                signupError = "There was an error. Please try again.";
-            }
+            userDetailsService.save(user);
         }
 
         if (signupError == null) {

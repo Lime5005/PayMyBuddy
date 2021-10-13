@@ -20,11 +20,11 @@ public class Friends extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private DaoUser user;
 
     @ManyToOne
     @JoinColumn(name = "friend_id")
-    private User friend;
+    private DaoUser friend;
 
     @Override
     public boolean equals(Object o) {

@@ -1,7 +1,7 @@
 package com.lime.paymybuddy.service;
 
 import com.lime.paymybuddy.dao.UserRepository;
-import com.lime.paymybuddy.model.User;
+import com.lime.paymybuddy.model.DaoUser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserServiceTests {
 
-    private final User user = new User();
+    private final DaoUser user = new DaoUser();
 
     @Autowired
     private UserService userService;
@@ -43,13 +43,13 @@ class UserServiceTests {
 
     @Test
     public void testFindUserById() {
-        Optional<User> userFound = userService.findById(user.getId());
+        Optional<DaoUser> userFound = userService.findById(user.getId());
         assertEquals("John", userFound.get().getUserName());
     }
 
     @Test
     public void testFindAllUser() {
-        List<User> users = userService.findAll();
+        List<DaoUser> users = userService.findAll();
         assertEquals(1, userRepository.findAll().size());
     }
 
@@ -62,7 +62,7 @@ class UserServiceTests {
     @Test
     public void testDeleteUserByEmail() {
         userService.deleteByEmail("john@gmail.com");
-        User user = userRepository.findByEmail("john@gmail.com");
+        DaoUser user = userRepository.findByEmail("john@gmail.com");
         assertNull(user);
     }
 

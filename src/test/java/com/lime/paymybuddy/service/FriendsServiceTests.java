@@ -3,7 +3,7 @@ package com.lime.paymybuddy.service;
 import com.lime.paymybuddy.dao.FriendsRepository;
 import com.lime.paymybuddy.dao.UserRepository;
 import com.lime.paymybuddy.model.Friends;
-import com.lime.paymybuddy.model.User;
+import com.lime.paymybuddy.model.DaoUser;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FriendsServiceTests {
 
-    private User user1 = new User();
-    private User user2 = new User();
+    private DaoUser user1 = new DaoUser();
+    private DaoUser user2 = new DaoUser();
 
     private Friends friends = new Friends();
 

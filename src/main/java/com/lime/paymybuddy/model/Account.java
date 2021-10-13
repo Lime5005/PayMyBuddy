@@ -21,7 +21,7 @@ public class Account extends AbstractEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private DaoUser user;
 
     @OneToMany(mappedBy = "fromAccount", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
