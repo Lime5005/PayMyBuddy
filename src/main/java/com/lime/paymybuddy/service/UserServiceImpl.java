@@ -3,6 +3,8 @@ package com.lime.paymybuddy.service;
 import com.lime.paymybuddy.dao.UserRepository;
 import com.lime.paymybuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +16,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -36,9 +40,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Integer save(User user) {
         if (user != null) {
-            return userRepository.save(user).getId();
+            User newUser = new User();
+            newUser.setUserName(user.getUserName());
+            newUser.setEmail(user.getEmail());
+            newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            return userRepository.save(newUser).getId();
         }
         return null;
     }
@@ -52,6 +61,5 @@ public class UserServiceImpl implements UserService {
     public void deleteByEmail(String email) {
         userRepository.deleteByEmail(email);
     }
-
 
 }
