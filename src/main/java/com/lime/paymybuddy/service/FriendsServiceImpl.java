@@ -19,13 +19,9 @@ public class FriendsServiceImpl implements FriendsService {
         this.friendsRepository = friendsRepository;
     }
 
+    @Override
     public void save(Friends friends) {
         friendsRepository.save(friends);
-    }
-
-    @Override
-    public void delete(Friends friends) {
-        friendsRepository.delete(friends);
     }
 
     @Override

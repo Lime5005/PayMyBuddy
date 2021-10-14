@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public Integer save(DaoUser user) { //todo:UserDetailsService will call to save, no need here?
+    public Integer save(DaoUser user) {
+        //UserDetailsService called to save UserDto as DaoUser, here is DaoUser saved As DaoUser.
         if (user != null) {
             DaoUser newUser = new DaoUser();
             newUser.setUserName(user.getUserName());

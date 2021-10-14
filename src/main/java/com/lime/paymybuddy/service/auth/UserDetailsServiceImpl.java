@@ -27,11 +27,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        //1, Override name as email:
         DaoUser user = userRepository.findByEmail(email);
-//        System.out.println("user = " + user);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with Email: " + email);
         }
+        //2, Load user by email:
         return new User(user.getEmail(), user.getPassword(), new ArrayList<>());
     }
 

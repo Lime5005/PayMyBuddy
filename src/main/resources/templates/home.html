@@ -9,62 +9,11 @@
     <title>Pay My Buddy</title>
 </head>
 <body>
-    <!-- nav bar -->
-    <div class="container pt-3">
-        <div class="row">
-            <div class="col-md-6 d-flex justify-content-start align-items-center">
-                <i class="fas fa-laptop-code fa-2x text-warning pb-3"></i>
-                <h5 class="text-dark d-inline pl-2">Pay My Buddy</h5>
-            </div>
-            <div class="col-md-6 pt-2">
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="text-black-50" th:text="${message}"></p>
-                    </div>
-                    <div class="col-md-2">
-                        <a href="/home" class="text-dark navigation-link pb-2">Home</a>
-                    </div>
-                    <div class="col-md-2">
-                        <a href="/transfer" class="text-dark navigation-link pb-2">Transfer</a>
-                    </div>
-                    <div class="col-md-2">
-                        <a href="/profile" class="text-dark navigation-link pb-2">Profile</a>
-                    </div>
-                    <div class="col-md-2">
-                        <a href="/contact" class="text-dark navigation-link pb-2">Contact</a>
-                    </div>
-                    <div class="col-md-2">
-<!--                        <a href="#logout" class="text-white navigation-link pb-2">Logout</a>-->
-                        <form action="#" th:action="@{/logout}" method="POST">
-                            <button id="logout-btn" type="submit" class="btn btn-secondary">Logout</button>
-                        </form>
-                    </div>
+    <div th:replace="~{/navbar::topbar}"></div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Other section-->
     <div id="home" class="container main-container">
-        <div class="table-responsive">
-            <table class="table table-striped" id="transactionTable">
-                <thead>
-                    <tr>
-                        <th>Connections</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody th:each="transaction: ${transactionList}">
-                    <tr>
-                        <td th:text="${transaction.getToAccount().getUser().getUserName()}">
-                            Connections</td>
-                        <td th:text="${transaction.getDescription()}">Description</td>
-                        <td th:text="${transaction.getAmount()}">Amount</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <h2>Create my account</h2>
+        <h3>My balance: </h3>
     </div>
 
 </body>

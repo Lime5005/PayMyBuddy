@@ -27,8 +27,7 @@ public class HomeController {
 
     @GetMapping
     public String getHome(Model model,  Principal principal) {
-//        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-//        String name = loggedInUser.getName();
+        //The name has been override as email:
         DaoUser user = userService.findByEmail(principal.getName());
         String name = user.getUserName();
 

@@ -9,29 +9,29 @@
     <title>Sign Up</title>
 </head>
 <body class="p-3 mb-2 bg-light text-black">
-<div class="container justify-content-center w-25 p-3" style="background-color: #eeeeee; margin-top: 5em;">
-    <div class="form-group">
-        <label><a th:href="@{/login}">Back to Login</a></label>
+    <div class="container justify-content-center w-25 p-3" style="background-color: #eeeeee; margin-top: 5em;">
+        <div class="form-group">
+            <label><a th:href="@{/login}">Back to Login</a></label>
+        </div>
+        <h1 class="display-5">Sign Up</h1>
+        <form action="#" th:action="@{/signup}" method="POST">
+            <div class="alert alert-danger" th:if="${signupError}">
+                <span>Email already exists, please change another email.</span>
+            </div>
+            <div class="form-group">
+                <label for="inputUsername">Username</label>
+                <input type="input" name="userName" class="form-control" id="inputUsername" placeholder="Enter Username" maxlength="20" required>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Email</label>
+                <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Enter Email" maxlength="20" required>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Enter Password" maxlength="20" required>
+            </div>
+            <button id="submit-button" type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
     </div>
-    <h1 class="display-5">Sign Up</h1>
-    <form action="#" th:action="@{/signup}" method="POST">
-        <div class="alert alert-danger" th:if="${signupError}">
-            <span>Email already exists, please change another email.</span>
-        </div>
-        <div class="form-group">
-            <label for="inputUsername">Username</label>
-            <input type="input" name="userName" class="form-control" id="inputUsername" placeholder="Enter Username" maxlength="20" required>
-        </div>
-        <div class="form-group">
-            <label for="inputEmail">Email</label>
-            <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Enter Email" maxlength="20" required>
-        </div>
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Enter Password" maxlength="20" required>
-        </div>
-        <button id="submit-button" type="submit" class="btn btn-primary">Sign Up</button>
-    </form>
-</div>
 </body>
 </html>
