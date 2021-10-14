@@ -47,12 +47,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Boolean sendMoney(Account fromAcc, Account toAcc, BigDecimal amount) {
+    public Boolean sendMoney(Account fromAcc, Account toAcc, BigDecimal amount, String description) {
         boolean send = false;
         if (fromAcc.getBalance().compareTo(BigDecimal.ONE) > 0
                 && fromAcc.getBalance().compareTo(amount) > 0) {
             // 1, Transfer:
-            fromAcc.setBalance(fromAcc.getBalance().subtract(amount));
+            fromAcc.setBalance(fromAcc.getBalance().subtract(amount.add(new BigDecimal("0.005").multiply(amount))));
             accountRepository.save(fromAcc);
             toAcc.setBalance(toAcc.getBalance().add(amount));
             accountRepository.save(toAcc);
@@ -61,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
             Transaction transaction = new Transaction();
             transaction.setFromAccount(fromAcc);
             transaction.setToAccount(toAcc);
-            transaction.setDescription("");
+            transaction.setDescription(description);
             transaction.setAmount(amount);
             transaction.setTransacted(true);
             transaction.setCharge(new BigDecimal("0.005").multiply(amount));

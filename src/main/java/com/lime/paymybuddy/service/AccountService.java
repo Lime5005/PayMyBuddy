@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface AccountService {
     Boolean saveOrUpdate(AccountDto accountDto, String email);
     Account findByUserId(int id);
-    Boolean sendMoney(Account fromAcc, Account toAcc, BigDecimal amount);
+    Boolean sendMoney(Account fromAcc, Account toAcc, BigDecimal amount, String description);
 
 }

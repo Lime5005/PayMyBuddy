@@ -35,7 +35,6 @@ public class HomeController {
         DaoUser user = userService.findByEmail(authentication.getName());
         String name = user.getUserName();
 
-//        Account account = accountService.findByUserId(user.getId());//todo:"account" is null
 //        model.addAttribute("transactionList", transactionService.findTransactionsByFromAccount_Id(account.getId()));
 //        model.addAttribute("friendList", friendsService.findAllByUser_Id(user.getId()));
 //

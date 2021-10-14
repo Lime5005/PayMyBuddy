@@ -2,8 +2,11 @@ package com.lime.paymybuddy.controller;
 
 import com.lime.paymybuddy.model.Account;
 import com.lime.paymybuddy.model.DaoUser;
+import com.lime.paymybuddy.model.Friends;
 import com.lime.paymybuddy.model.dto.AccountDto;
+import com.lime.paymybuddy.model.dto.TransactionDto;
 import com.lime.paymybuddy.service.AccountService;
+import com.lime.paymybuddy.service.FriendsService;
 import com.lime.paymybuddy.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/account")
@@ -21,6 +25,7 @@ public class AccountController {
 
     private AccountService accountService;
     private UserService userService;
+    private FriendsService friendsService;
 
     public AccountController(AccountService accountService, UserService userService) {
         this.accountService = accountService;
@@ -49,5 +54,47 @@ public class AccountController {
         model.addAttribute("errorType", errorType);
 
         return "result";
+    }
+
+    @PostMapping
+    public String sendMoney(Authentication authentication,
+                            @ModelAttribute("newTransfer") TransactionDto transactionDto, Model model) {
+        boolean isFriend = false;
+        boolean success = false;
+        int errorType = 0;
+        boolean sent = false;
+        String email = authentication.getName();
+        DaoUser fromUser = userService.findByEmail(email);
+        String toEmail = transactionDto.getToEmail();
+        DaoUser toUser = userService.findByEmail(toEmail);
+
+        Friends friends = friendsService.findByFriend_Id(toUser.getId());
+        List<Friends> allFriends = friendsService.findAllByUser_Id(fromUser.getId());
+        for (Friends friend : allFriends) {
+            if (friend.getFriend() == toUser) {
+                isFriend = true;
+                break;
+            } else {
+                errorType = 2;
+            }
+        }
+
+        if (isFriend) {
+            Account fromAcc = accountService.findByUserId(fromUser.getId());
+            Account toAcc = accountService.findByUserId(toUser.getId());
+            sent = accountService.sendMoney(fromAcc, toAcc, transactionDto.getAmount(), transactionDto.getDescription());
+        }
+
+        if (sent) {
+            success = true;
+        } else {
+            errorType = 3;
+        }
+
+        model.addAttribute("success", success);
+        model.addAttribute("errorType", errorType);
+
+        return "result";
+
     }
 }

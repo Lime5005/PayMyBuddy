@@ -5,6 +5,7 @@ import com.lime.paymybuddy.dao.TransactionRepository;
 import com.lime.paymybuddy.dao.UserRepository;
 import com.lime.paymybuddy.model.Account;
 import com.lime.paymybuddy.model.DaoUser;
+import com.lime.paymybuddy.model.dto.AccountDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,8 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AccountServiceTests {
 
-    private Account fromAccount = new Account();
-    private Account toAccount = new Account();
+    private AccountDto fromAccount = new AccountDto();
+    private Account account1 = new Account();
+    private AccountDto toAccount = new AccountDto();
+    private Account account2 = new Account();
+
 
     private DaoUser fromUser = new DaoUser();
     private DaoUser toUser = new DaoUser();
@@ -47,16 +51,16 @@ public class AccountServiceTests {
 //        fromUser.setEmail("foo@gmail.com");
 //        fromUser.setPassword("foo");
 //        fromUser.setId(userService.save(fromUser));
-//        fromAccount.setUser(fromUser);
-//        accountService.save(fromAccount);
+//
+//        accountService.saveOrUpdate(fromAccount, "foo@gmail.com");
 //
 //        toAccount.setBalance(new BigDecimal(0));
 //        toUser.setUserName("Bar");
 //        toUser.setEmail("bar@gmail.com");
 //        toUser.setPassword("bar");
 //        toUser.setId(userService.save(toUser));
-//        toAccount.setUser(toUser);
-//        accountService.save(toAccount);
+//
+//        accountService.saveOrUpdate(toAccount, "bar@gmail.com");
 //
 //    }
 
@@ -71,8 +75,13 @@ public class AccountServiceTests {
     @Test
     @Order(1)
     public void testSendMoney() {
+        account1.setUser(fromUser);
+        account1.setBalance(fromAccount.getBalance());
+        
+        account2.setUser(toUser);
+        account2.setBalance(toAccount.getBalance());
 //Test passed when I initiate `transactions = new HashSet<>();` in Account.class;
-        accountService.sendMoney(fromAccount, toAccount, new BigDecimal(200));
+//        accountService.sendMoney(account1, account2, new BigDecimal(200));
         assertEquals(0, toAccount.getBalance().compareTo(new BigDecimal(200)));
     }
 
