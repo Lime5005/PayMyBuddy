@@ -1,7 +1,9 @@
 package com.lime.paymybuddy.controller;
 
+import com.lime.paymybuddy.model.Account;
 import com.lime.paymybuddy.model.DaoUser;
 import com.lime.paymybuddy.model.dto.UserDto;
+import com.lime.paymybuddy.service.AccountService;
 import com.lime.paymybuddy.service.UserService;
 import com.lime.paymybuddy.service.auth.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class SignupController {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     public SignupController(UserService userService) {
@@ -43,6 +48,7 @@ public class SignupController {
         }
 
         if (signupError == null) {
+            model.addAttribute("newUser", true);
             redirAttrs.addFlashAttribute("message", "You've successfully signed up, please login.");
             return "redirect:/login";
         } else {

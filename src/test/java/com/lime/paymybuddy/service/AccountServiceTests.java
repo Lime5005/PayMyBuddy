@@ -39,25 +39,26 @@ public class AccountServiceTests {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    @BeforeAll
-    public void initAccountsWithUsers() {
-        fromAccount.setBalance(new BigDecimal(1000));
-        fromUser.setUserName("Foo");
-        fromUser.setEmail("foo@gmail.com");
-        fromUser.setPassword("foo");
-        fromUser.setId(userService.save(fromUser));
-        fromAccount.setUser(fromUser);
-        accountService.save(fromAccount);
-
-        toAccount.setBalance(new BigDecimal(0));
-        toUser.setUserName("Bar");
-        toUser.setEmail("bar@gmail.com");
-        toUser.setPassword("bar");
-        toUser.setId(userService.save(toUser));
-        toAccount.setUser(toUser);
-        accountService.save(toAccount);
-
-    }
+    //todo: change the logic
+//    @BeforeAll
+//    public void initAccountsWithUsers() {
+//        fromAccount.setBalance(new BigDecimal(1000));
+//        fromUser.setUserName("Foo");
+//        fromUser.setEmail("foo@gmail.com");
+//        fromUser.setPassword("foo");
+//        fromUser.setId(userService.save(fromUser));
+//        fromAccount.setUser(fromUser);
+//        accountService.save(fromAccount);
+//
+//        toAccount.setBalance(new BigDecimal(0));
+//        toUser.setUserName("Bar");
+//        toUser.setEmail("bar@gmail.com");
+//        toUser.setPassword("bar");
+//        toUser.setId(userService.save(toUser));
+//        toAccount.setUser(toUser);
+//        accountService.save(toAccount);
+//
+//    }
 
     @AfterAll
     public void cleanAccount() {

@@ -12,6 +12,9 @@ public class LoginController {
 
     @GetMapping
     public String getLoginPage(Model model) {
+        if (!model.containsAttribute("newUser")) {
+            model.addAttribute("newUser", false);
+        }
         return "login";
     }
 }

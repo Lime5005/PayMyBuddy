@@ -3,11 +3,14 @@ package com.lime.paymybuddy.controller;
 import com.lime.paymybuddy.model.Account;
 import com.lime.paymybuddy.model.DaoUser;
 import com.lime.paymybuddy.service.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 
 @Controller
@@ -26,9 +29,10 @@ public class HomeController {
     }
 
     @GetMapping
-    public String getHome(Model model,  Principal principal) {
+    public String getHome(Authentication authentication, Model model) {
+
         //The name has been override as email:
-        DaoUser user = userService.findByEmail(principal.getName());
+        DaoUser user = userService.findByEmail(authentication.getName());
         String name = user.getUserName();
 
 //        Account account = accountService.findByUserId(user.getId());//todo:"account" is null
@@ -36,6 +40,7 @@ public class HomeController {
 //        model.addAttribute("friendList", friendsService.findAllByUser_Id(user.getId()));
 //
         model.addAttribute("message", "Hi " + name);
+        model.addAttribute("balance", user.getAccount().getBalance() == null ? new BigDecimal(0) : user.getAccount().getBalance());
         return "home";
     }
 }

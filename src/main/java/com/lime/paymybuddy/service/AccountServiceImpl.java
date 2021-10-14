@@ -2,8 +2,11 @@ package com.lime.paymybuddy.service;
 
 import com.lime.paymybuddy.dao.AccountRepository;
 import com.lime.paymybuddy.dao.TransactionRepository;
+import com.lime.paymybuddy.dao.UserRepository;
 import com.lime.paymybuddy.model.Account;
+import com.lime.paymybuddy.model.DaoUser;
 import com.lime.paymybuddy.model.Transaction;
+import com.lime.paymybuddy.model.dto.AccountDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,15 +18,27 @@ import java.math.BigDecimal;
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
+        this.userRepository = userRepository;
     }
 
-    public Integer save(Account account) {
-        return accountRepository.save(account).getId();
+    public Boolean saveOrUpdate(AccountDto accountDto, String email) {
+        DaoUser user = userRepository.findByEmail(email);
+        Account account = accountRepository.findByUserId(user.getId());
+        if (account == null) {
+            Account newAccount = new Account();
+            newAccount.setUser(user);
+            newAccount.setBalance(accountDto.getBalance());
+            accountRepository.save(newAccount);
+        } else {
+            accountRepository.update(account.getId(), accountDto.getBalance());
+        }
+        return true;
     }
 
     @Override
