@@ -34,19 +34,19 @@ public class FriendsServiceTests {
     @Autowired
     private UserRepository userRepository;
 
-    @BeforeEach
+    @BeforeAll
     public void testSaveFriends() {
         user1.setUserName("Ayu");
         user1.setEmail("ayu@gmail.com");
         user1.setPassword("123");
-        userService.save(user1);
+        //Important: save generated id, or else the id would not be detected be the following tests.
+        user1.setId(userService.save(user1));
+
         user2.setUserName("Nil");
         user2.setEmail("nil@gmail.com");
         user2.setPassword("123");
-        userService.save(user2);
-        friends.setUser(user1);
-        friends.setFriend(user2);
-        friendsService.save(friends);
+        user2.setId(userService.save(user2));
+
     }
 
     @AfterAll
@@ -56,22 +56,31 @@ public class FriendsServiceTests {
         userRepository.deleteAll();
     }
 
+
     @Test
     @Order(1)
+    public void testSaveFriend() {
+        friends.setUser(user1);
+        friends.setFriend(user2);
+        friendsService.save(friends);
+    }
+
+    @Test
+    @Order(2)
     public void testFindAllByUserId() {
         List<Friends> friends = friendsService.findAllByUser_Id(user1.getId());
         assertEquals(1, friends.size());
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     public void testFindByFriendId() {
         Friends friends = friendsService.findByFriend_Id(user2.getId());
         assertEquals("nil@gmail.com", friends.getFriend().getEmail());
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void testDeleteByFriendId() {
         Integer id = friendsService.deleteByFriend_Id(user2.getId());
         assertNull(friendsRepository.findByFriend_Id(id));
