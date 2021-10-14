@@ -19,8 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AccountServiceTests {
 
     private Account fromAccount = new Account();
+    private Account toAccount = new Account();
 
     private DaoUser fromUser = new DaoUser();
+    private DaoUser toUser = new DaoUser();
 
     @Autowired
     private AccountService accountService;
@@ -37,7 +39,7 @@ public class AccountServiceTests {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    @BeforeEach
+    @BeforeAll
     public void initAccountsWithUsers() {
         fromAccount.setBalance(new BigDecimal(1000));
         fromUser.setUserName("Foo");
@@ -46,6 +48,14 @@ public class AccountServiceTests {
         fromUser.setId(userService.save(fromUser));
         fromAccount.setUser(fromUser);
         accountService.save(fromAccount);
+
+        toAccount.setBalance(new BigDecimal(0));
+        toUser.setUserName("Bar");
+        toUser.setEmail("bar@gmail.com");
+        toUser.setPassword("bar");
+        toUser.setId(userService.save(toUser));
+        toAccount.setUser(toUser);
+        accountService.save(toAccount);
 
     }
 
@@ -60,15 +70,6 @@ public class AccountServiceTests {
     @Test
     @Order(1)
     public void testSendMoney() {
-        Account toAccount = new Account();
-        DaoUser toUser = new DaoUser();
-        toAccount.setBalance(new BigDecimal(0));
-        toUser.setUserName("Bar");
-        toUser.setEmail("bar@gmail.com");
-        toUser.setPassword("bar");
-        toUser.setId(userService.save(toUser));
-        toAccount.setUser(toUser);
-        accountService.save(toAccount);
 //Test passed when I initiate `transactions = new HashSet<>();` in Account.class;
         accountService.sendMoney(fromAccount, toAccount, new BigDecimal(200));
         assertEquals(0, toAccount.getBalance().compareTo(new BigDecimal(200)));
