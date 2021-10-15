@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -88,6 +89,13 @@ public class FriendsServiceTests {
 
     @Test
     @Order(5)
+    public void testFindAllMyFriends() {
+        Set<DaoUser> friends = friendsService.findAllMyFriends(user1.getId());
+        assertEquals(1, friends.size());
+    }
+
+    @Test
+    @Order(6)
     public void testDeleteByFriendId() {
         Integer id = friendsService.deleteByFriend_Id(user2.getId());
         assertNull(friendsRepository.findByFriend_Id(id));

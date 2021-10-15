@@ -24,9 +24,6 @@ public class SignupController {
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     public SignupController(UserService userService) {
         this.userService = userService;
     }

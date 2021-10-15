@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer save(DaoUser user) {
-        //UserDetailsService called to save UserDto as DaoUser, here is DaoUser saved As DaoUser.
+        //UserDetailsService called to save UserDto as DaoUser, here is DaoUser saved As DaoUser, so it's not duplicate method.
         if (user != null) {
             DaoUser newUser = new DaoUser();
             newUser.setUserName(user.getUserName());

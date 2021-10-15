@@ -1,6 +1,5 @@
 package com.lime.paymybuddy.service;
 
-import com.lime.paymybuddy.model.Account;
 import com.lime.paymybuddy.model.Transaction;
 
 import java.util.List;

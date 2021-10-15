@@ -2,7 +2,6 @@ package com.lime.paymybuddy.controller;
 
 import com.lime.paymybuddy.model.Account;
 import com.lime.paymybuddy.model.DaoUser;
-import com.lime.paymybuddy.model.Friends;
 import com.lime.paymybuddy.model.dto.AccountDto;
 import com.lime.paymybuddy.model.dto.TransactionDto;
 import com.lime.paymybuddy.service.AccountService;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/account")
@@ -40,7 +38,6 @@ public class AccountController {
         int errorType = 1;
         String email = authentication.getName(); // I override name as email, so here I got email.
 
-        DaoUser user = userService.findByEmail(email);
         if (accountDto.getBalance().compareTo(new BigDecimal(0)) < 0 ) {
             return "error-400";
         }
@@ -63,8 +60,7 @@ public class AccountController {
         boolean success = false;
         int errorType = 0;
         boolean sent = false;
-        //System.out.println("1 ====== " + transactionDto);
-        //1 ====== com.lime.paymybuddy.model.dto.TransactionDto@f498090
+
         //1, Get user:
         String email = authentication.getName();
         DaoUser fromUser = userService.findByEmail(email);
@@ -72,14 +68,13 @@ public class AccountController {
         //2, Get friend:
         String toEmail = transactionDto.getToEmail();
         DaoUser toUser = userService.findByEmail(toEmail);
-        //System.out.println("2 ====== toUser = " + toUser); //Printed all the details!
 
-        //todo: sendMoney not working, always errorType = 3.
         //3, Check if friend is in connections:
         if (friendsService.isFriend(fromUser.getId(), toUser.getId())) {
             isFriend = true;
         }
 
+        //4, Check if both accounts exits, then sendMoney:
         Account fromAcc = accountService.findByUserId(fromUser.getId());
         Account toAcc = accountService.findByUserId(toUser.getId());
         if (isFriend) {

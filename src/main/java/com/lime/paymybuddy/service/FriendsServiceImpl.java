@@ -65,6 +65,11 @@ public class FriendsServiceImpl implements FriendsService {
         return check;
     }
 
+    /**
+     * Method for a User to find all his friends by DaoUser id.
+     * @param id DaoUser id.
+     * @return A Set of DaoUser.
+     */
     @Override
     public Set<DaoUser> findAllMyFriends(int id) {
         HashSet<DaoUser> friendsSet = new HashSet<>();
