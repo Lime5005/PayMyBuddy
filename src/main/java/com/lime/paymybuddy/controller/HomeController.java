@@ -34,12 +34,16 @@ public class HomeController {
         //The name has been override as email:
         DaoUser user = userService.findByEmail(authentication.getName());
         String name = user.getUserName();
+//        Account account = new Account();
+//        account.setUser(user);
+//        account.setBalance(new BigDecimal(0));
+//        accountService.
 
 //        model.addAttribute("transactionList", transactionService.findTransactionsByFromAccount_Id(account.getId()));
 //        model.addAttribute("friendList", friendsService.findAllByUser_Id(user.getId()));
 //
         model.addAttribute("message", "Hi " + name);
-        model.addAttribute("balance", user.getAccount().getBalance() == null ? new BigDecimal(0) : user.getAccount().getBalance());
+        model.addAttribute("balance", user.getAccount() == null ? new BigDecimal(0) : user.getAccount().getBalance());
         return "home";
     }
 }

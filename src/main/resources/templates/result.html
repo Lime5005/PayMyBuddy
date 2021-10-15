@@ -28,6 +28,10 @@
             <h1 class="display-5">Error</h1>
             <span>Balance not enough. Click <a id="errorResult3" th:href="@{/home}">here</a> to continue.</span>
         </div>
+        <div class="alert alert-danger fill-parent" th:if="${not success} and ${errorType == 4}" >
+            <h1 class="display-5">Error</h1>
+            <span>The buddy is not our user / has no account yet. Click <a id="errorResult4" th:href="@{/home}">here</a> to continue.</span>
+        </div>
     </div>
 
 </body>

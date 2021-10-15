@@ -9,7 +9,6 @@ import com.lime.paymybuddy.service.AccountService;
 import com.lime.paymybuddy.service.FriendsService;
 import com.lime.paymybuddy.service.UserService;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,12 +26,13 @@ public class AccountController {
     private UserService userService;
     private FriendsService friendsService;
 
-    public AccountController(AccountService accountService, UserService userService) {
+    public AccountController(AccountService accountService, UserService userService, FriendsService friendsService) {
         this.accountService = accountService;
         this.userService = userService;
+        this.friendsService = friendsService;
     }
 
-    @PostMapping
+    @PostMapping("/edit")
     public String saveOrUpdateAccount(Authentication authentication,
                              @ModelAttribute("newAccount") AccountDto accountDto,
                              Model model) {
@@ -56,7 +56,7 @@ public class AccountController {
         return "result";
     }
 
-    @PostMapping
+    @PostMapping("/transfer")
     public String sendMoney(Authentication authentication,
                             @ModelAttribute("newTransfer") TransactionDto transactionDto, Model model) {
         boolean isFriend = false;
@@ -65,10 +65,10 @@ public class AccountController {
         boolean sent = false;
         String email = authentication.getName();
         DaoUser fromUser = userService.findByEmail(email);
+
         String toEmail = transactionDto.getToEmail();
         DaoUser toUser = userService.findByEmail(toEmail);
 
-        Friends friends = friendsService.findByFriend_Id(toUser.getId());
         List<Friends> allFriends = friendsService.findAllByUser_Id(fromUser.getId());
         for (Friends friend : allFriends) {
             if (friend.getFriend() == toUser) {
@@ -79,9 +79,11 @@ public class AccountController {
             }
         }
 
+        //todo: sendMoney not working, always errorType = 3.
         if (isFriend) {
             Account fromAcc = accountService.findByUserId(fromUser.getId());
             Account toAcc = accountService.findByUserId(toUser.getId());
+            System.out.println("Amount = " + transactionDto.getAmount());
             sent = accountService.sendMoney(fromAcc, toAcc, transactionDto.getAmount(), transactionDto.getDescription());
         }
 

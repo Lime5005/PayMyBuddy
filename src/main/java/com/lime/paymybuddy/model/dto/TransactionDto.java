@@ -5,17 +5,17 @@ import com.lime.paymybuddy.model.Account;
 import java.math.BigDecimal;
 
 public class TransactionDto {
-    private Account fromAccount;
+    private Account userAccount;
     private String toEmail;
     private BigDecimal amount;
     private String description;
 
-    public Account getFromAccount() {
-        return fromAccount;
+    public Account getUserAccount() {
+        return userAccount;
     }
 
-    public void setFromAccount(Account fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setUserAccount(Account userAccount) {
+        this.userAccount = userAccount;
     }
 
     public String getToEmail() {

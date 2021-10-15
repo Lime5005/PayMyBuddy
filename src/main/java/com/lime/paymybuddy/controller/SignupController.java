@@ -48,7 +48,6 @@ public class SignupController {
         }
 
         if (signupError == null) {
-            model.addAttribute("newUser", true);
             redirAttrs.addFlashAttribute("message", "You've successfully signed up, please login.");
             return "redirect:/login";
         } else {
