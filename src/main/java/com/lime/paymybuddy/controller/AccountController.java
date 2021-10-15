@@ -63,34 +63,39 @@ public class AccountController {
         boolean success = false;
         int errorType = 0;
         boolean sent = false;
+        //System.out.println("1 ====== " + transactionDto);
+        //1 ====== com.lime.paymybuddy.model.dto.TransactionDto@f498090
+        //1, Get user:
         String email = authentication.getName();
         DaoUser fromUser = userService.findByEmail(email);
 
+        //2, Get friend:
         String toEmail = transactionDto.getToEmail();
         DaoUser toUser = userService.findByEmail(toEmail);
-
-        List<Friends> allFriends = friendsService.findAllByUser_Id(fromUser.getId());
-        for (Friends friend : allFriends) {
-            if (friend.getFriend() == toUser) {
-                isFriend = true;
-                break;
-            } else {
-                errorType = 2;
-            }
-        }
+        //System.out.println("2 ====== toUser = " + toUser); //Printed all the details!
 
         //todo: sendMoney not working, always errorType = 3.
-        if (isFriend) {
-            Account fromAcc = accountService.findByUserId(fromUser.getId());
-            Account toAcc = accountService.findByUserId(toUser.getId());
-            System.out.println("Amount = " + transactionDto.getAmount());
-            sent = accountService.sendMoney(fromAcc, toAcc, transactionDto.getAmount(), transactionDto.getDescription());
+        //3, Check if friend is in connections:
+        if (friendsService.isFriend(fromUser.getId(), toUser.getId())) {
+            isFriend = true;
         }
 
-        if (sent) {
-            success = true;
-        } else {
-            errorType = 3;
+        Account fromAcc = accountService.findByUserId(fromUser.getId());
+        Account toAcc = accountService.findByUserId(toUser.getId());
+        if (isFriend) {
+            if (fromAcc == null) {
+                errorType = 1;
+            } else if (toAcc == null) {
+                errorType = 4;
+            } else {
+                sent = accountService.sendMoney(fromAcc, toAcc, transactionDto.getAmount(), transactionDto.getDescription());
+            }
+
+            if (sent) {
+                success = true;
+            } else {
+                errorType = 3;
+            }
         }
 
         model.addAttribute("success", success);

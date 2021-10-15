@@ -67,20 +67,27 @@ public class FriendsServiceTests {
 
     @Test
     @Order(2)
+    public void testIsFriend() {
+        Boolean friend = friendsService.isFriend(user1.getId(), user2.getId());
+        assertEquals(true, friend);
+    }
+
+    @Test
+    @Order(3)
     public void testFindAllByUserId() {
         List<Friends> friends = friendsService.findAllByUser_Id(user1.getId());
         assertEquals(1, friends.size());
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void testFindByFriendId() {
         Friends friends = friendsService.findByFriend_Id(user2.getId());
         assertEquals("nil@gmail.com", friends.getFriend().getEmail());
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void testDeleteByFriendId() {
         Integer id = friendsService.deleteByFriend_Id(user2.getId());
         assertNull(friendsRepository.findByFriend_Id(id));

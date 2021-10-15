@@ -23,7 +23,7 @@ public class Account extends AbstractEntity {
     @JoinColumn(name = "user_id")
     private DaoUser user;
 
-    @OneToMany(mappedBy = "fromAccount", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fromAccount", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Transaction> transactions = new HashSet<>();
 

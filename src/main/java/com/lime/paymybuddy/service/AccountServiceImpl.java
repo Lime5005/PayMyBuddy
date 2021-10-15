@@ -49,30 +49,35 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Boolean sendMoney(Account fromAcc, Account toAcc, BigDecimal amount, String description) {
         boolean send = false;
-        if (fromAcc.getBalance().compareTo(BigDecimal.ONE) > 0
-                && fromAcc.getBalance().compareTo(amount) > 0) {
-            // 1, Transfer:
-            fromAcc.setBalance(fromAcc.getBalance().subtract(amount.add(new BigDecimal("0.005").multiply(amount))));
-            accountRepository.save(fromAcc);
-            toAcc.setBalance(toAcc.getBalance().add(amount));
-            accountRepository.save(toAcc);
+        if (fromAcc == null || toAcc == null) {
+            return false;
+        } else {
+            if (fromAcc.getBalance().compareTo(BigDecimal.ONE) > 0
+                    && fromAcc.getBalance().compareTo(amount) > 0) {
+                // 1, Transfer:
+                fromAcc.setBalance(fromAcc.getBalance().subtract(amount.add(new BigDecimal("0.005").multiply(amount))));
+                accountRepository.save(fromAcc);
+                toAcc.setBalance(toAcc.getBalance().add(amount));
+                accountRepository.save(toAcc);
 
-            // 2, Save a record in app:
-            Transaction transaction = new Transaction();
-            transaction.setFromAccount(fromAcc);
-            transaction.setToAccount(toAcc);
-            transaction.setDescription(description);
-            transaction.setAmount(amount);
-            transaction.setTransacted(true);
-            transaction.setCharge(new BigDecimal("0.005").multiply(amount));
-            transactionRepository.save(transaction);
+                // 2, Save a record in app:
+                Transaction transaction = new Transaction();
+                transaction.setFromAccount(fromAcc);
+                transaction.setToAccount(toAcc);
+                transaction.setDescription(description);
+                transaction.setAmount(amount);
+                transaction.setTransacted(true);
+                transaction.setCharge(new BigDecimal("0.005").multiply(amount));
+                transactionRepository.save(transaction);
 
-            // 3, Save a record for user:
-            fromAcc.getTransactions().add(transaction);
+                // 3, Save a record for user:
+                fromAcc.getTransactions().add(transaction);
 
-            System.out.println("Transaction is called!");
-            send = true;
+                System.out.println("Transaction is called!");
+                send = true;
+            }
         }
+
         return send;
     }
 

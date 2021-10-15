@@ -33,27 +33,24 @@ public class FriendController {
         String email = authentication.getName();
         DaoUser user = userService.findByEmail(email);
         int errorType = 0;
+        boolean success = false;
 
-        //2, Check if friend is in database
+        //2, Check if friend is in database or has an account
         String friendEmail = friendDto.getFriendEmail();
         DaoUser friendToBe = userService.findByEmail(friendEmail);
-        if (friendToBe == null) {
+
+        if (friendToBe == null || friendToBe.getAccount() == null) {
             errorType = 4;
+        } else {
+            //4, Save
+            Friends friends = new Friends();
+            friends.setUser(user);
+            friends.setFriend(friendToBe);
+            friendsService.save(friends);
+            success = true;
         }
 
-        //3, Check if friend has an account
-        assert friendToBe != null;
-        if (friendToBe.getAccount() == null) {
-            errorType = 4;
-        }
-
-        //4, Save
-        Friends friends = new Friends();
-        friends.setUser(user);
-        friends.setFriend(friendToBe);
-        friendsService.save(friends);
-
-        model.addAttribute("success", true);
+        model.addAttribute("success", success);
         model.addAttribute("errorType", errorType);
 
         return "result";

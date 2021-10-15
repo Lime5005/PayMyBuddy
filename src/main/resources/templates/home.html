@@ -8,71 +8,103 @@
 
     <title>Pay My Buddy</title>
 </head>
-<body>
+<body class="p-3 mb-2 bg-light text-black">
     <div th:replace="~{/navbar::topbar}"></div>
 
     <div id="home" class="container main-container">
-        <div class="newAccount">
-            <button type="button" class="btn btn-info" onclick="showAccountForm()">+ Set Balance</button>
-        </div>
-        <div id="account" style="display: none">
-            <form class="form-control" th:action="@{/account/edit}" method="POST">
-                <label for="balance">Change balance:</label>
-                <input id="balance" type="number" name="balance" min="0" value="0" step=".01" required>
-                <button type="submit" class="btn btn-primary" value="Save">Save</button>
-            </form>
-        </div>
-
-        <h3>My balance: <span th:text="${#numbers.formatDecimal(balance, 0, 'COMMA', 2, 'POINT')}">0</span></h3>
-
-        <div>
-            <h3>New transaction: </h3>
-        </div>
-        <div class="newTransfer">
-            <button type="button" class="btn btn-info" onclick="showTransferForm()">+ New Transaction</button>
-        </div>
-        <div id="transfer" style="display: none">
-            <form class="form-control" th:action="@{/account/transfer}" method="POST">
-                <input type="hidden" name="userAccount"
-                       id="user-account">
-                <div class="form-group">
-                    <label for="toEmail">To connect: </label>
-                    <input type="email" id="toEmail" name="toEmail" required>
+        <nav style="clear: right;">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-account-tab" data-toggle="tab" href="#nav-account" role="tab"
+                   aria-controls="nav-account" aria-selected="true">Home</a>
+                <a class="nav-item nav-link" id="nav-transfer-tab" data-toggle="tab" href="#nav-transfer" role="tab"
+                   aria-controls="nav-transfer" aria-selected="false">Transfer</a>
+                <a class="nav-item nav-link" id="nav-connect-tab" data-toggle="tab" href="#nav-connect"
+                   role="tab" aria-controls="nav-connect" aria-selected="false">Connect</a>
+            </div>
+        </nav>
+        <div class="tab-content mt-5" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
+                <div class="newAccount">
+                    <button type="button" class="btn btn-info" onclick="showAccountForm()">+ Set Balance</button>
                 </div>
-                <div class="form-group">
-                    <label for="amount">Amount: </label>
-                    <input type="number" min="0" value="0" step=".01" name="amount" id="amount" required>
+                <h5>My balance: <span th:text="${#numbers.formatDecimal(balance, 0, 'COMMA', 2, 'POINT')}">0</span></h5>
+                <div id="account" style="display: none">
+                    <form class="form-control" th:action="@{/account/edit}" method="POST">
+                        <label for="balance">Change balance:</label>
+                        <input id="balance" type="number" name="balance" min="0" value="0" step=".01" required>
+                        <button type="submit" class="btn btn-primary" value="Save">Save</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="description">Description: </label>
-                    <input type="text" name="description" id="description">
+            </div>
+            <div class="tab-pane fade" id="nav-transfer" role="tabpanel" aria-labelledby="nav-credentials-tab">
+                <div>
+                    <h3>New transaction: </h3>
                 </div>
-                <button type="submit" class="btn btn-primary" value="Transfer">Transfer</button>
-            </form>
-        </div>
+                <div class="newTransfer">
+                    <button type="button" class="btn btn-info" onclick="showTransferForm()">+ New Transaction</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="transactionTable">
+                        <thead>
+                        <tr>
+                            <th>Connections</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="transaction: ${transactionList}">
+                        <tr>
+                            <td th:text="${transaction.getToAccount().getUser().getUserName()}">
+                                Connections</td>
+                            <td th:text="${transaction.getDescription()}">Description</td>
+                            <td th:text="${transaction.getAmount()}">Amount</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="transfer" style="display: none">
+                    <form class="form-control" th:action="@{/account/transfer}" method="POST">
+                        <input type="hidden" name="userAccount"
+                               id="user-account">
+                        <div class="form-group">
+                            <label for="toEmail">To connect: </label>
+                            <input type="email" id="toEmail" name="toEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Amount: </label>
+                            <input type="number" min="0" value="0" step=".01" name="amount" id="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description: </label>
+                            <input type="text" name="description" id="description">
+                        </div>
+                        <button type="submit" class="btn btn-primary" value="Transfer">Transfer</button>
+                    </form>
+                </div>
+            </div>
 
-        <div>
-            <h3>New Friend:</h3>
-        </div>
-        <div class="newFriend">
-            <button type="button" class="btn btn-info" onclick="showFriendForm()">+ New Friend</button>
-        </div>
-        <div id="friend" style="display: none">
-            <form class="form-control" th:action="@{/friend}" method="POST">
-                <input type="hidden" name="user"
-                       id="user">
-                <div class="form-group">
-                    <label for="friendEmail">Connect To: </label>
-                    <input type="email" id="friendEmail" name="friendEmail" required>
+            <div class="tab-pane fade" id="nav-connect" role="tabpanel" aria-labelledby="nav-credentials-tab">
+                <div>
+                    <h3>New Friend:</h3>
                 </div>
-
-                <button type="submit" class="btn btn-primary" value="saveConnection">Save Connection</button>
-            </form>
+                <div class="newFriend">
+                    <button type="button" class="btn btn-info" onclick="showFriendForm()">+ New Friend</button>
+                </div>
+                <div id="friend" style="display: none">
+                    <form class="form-control" th:action="@{/friend}" method="POST">
+                        <input type="hidden" name="user"
+                               id="user">
+                        <div class="form-group">
+                            <label for="friendEmail">Connect To: </label>
+                            <input type="email" id="friendEmail" name="friendEmail" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" value="saveConnection">Save Connection</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
     </div>
-
-
 
     <script th:src="@{/js/jquery-slim.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
