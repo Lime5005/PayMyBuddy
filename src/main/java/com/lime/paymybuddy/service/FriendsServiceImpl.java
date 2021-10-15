@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -61,6 +63,25 @@ public class FriendsServiceImpl implements FriendsService {
             }
         }
         return check;
+    }
+
+    @Override
+    public Set<DaoUser> findAllMyFriends(int id) {
+        HashSet<DaoUser> friendsSet = new HashSet<>();
+        Optional<DaoUser> user = userRepository.findById(id);
+        List<Friends> friends = friendsRepository.findAll();
+        if (user.isPresent()) {
+            for (Friends friend : friends) {
+                // Others add me as friend:
+                if (friend.getFriend().getId() == id) {
+                    friendsSet.add(friend.getUser());
+                    // I add other as friend:
+                } else if (friend.getUser().getId() == id) {
+                    friendsSet.add(friend.getFriend());
+                }
+            }
+        }
+        return friendsSet;
     }
 
 }

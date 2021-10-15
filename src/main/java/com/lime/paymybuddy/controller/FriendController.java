@@ -9,6 +9,7 @@ import com.lime.paymybuddy.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,7 @@ public class FriendController {
         if (friendToBe == null || friendToBe.getAccount() == null) {
             errorType = 4;
         } else {
-            //4, Save
+            //3, Save
             Friends friends = new Friends();
             friends.setUser(user);
             friends.setFriend(friendToBe);
