@@ -20,10 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AccountServiceTests {
 
     private AccountDto fromAccount = new AccountDto();
-    private Account account1 = new Account();
     private AccountDto toAccount = new AccountDto();
-    private Account account2 = new Account();
-
 
     private DaoUser fromUser = new DaoUser();
     private DaoUser toUser = new DaoUser();
@@ -43,26 +40,25 @@ public class AccountServiceTests {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    //todo: change the logic
-//    @BeforeAll
-//    public void initAccountsWithUsers() {
-//        fromAccount.setBalance(new BigDecimal(1000));
-//        fromUser.setUserName("Foo");
-//        fromUser.setEmail("foo@gmail.com");
-//        fromUser.setPassword("foo");
-//        fromUser.setId(userService.save(fromUser));
-//
-//        accountService.saveOrUpdate(fromAccount, "foo@gmail.com");
-//
-//        toAccount.setBalance(new BigDecimal(0));
-//        toUser.setUserName("Bar");
-//        toUser.setEmail("bar@gmail.com");
-//        toUser.setPassword("bar");
-//        toUser.setId(userService.save(toUser));
-//
-//        accountService.saveOrUpdate(toAccount, "bar@gmail.com");
-//
-//    }
+    @BeforeAll
+    public void initAccountsWithUsers() {
+        fromAccount.setBalance(new BigDecimal(1000));
+        fromUser.setUserName("Foo");
+        fromUser.setEmail("foo@gmail.com");
+        fromUser.setPassword("foo");
+        fromUser.setId(userService.save(fromUser));
+
+        accountService.saveOrUpdate(fromAccount, "foo@gmail.com");
+
+        toAccount.setBalance(new BigDecimal(0));
+        toUser.setUserName("Bar");
+        toUser.setEmail("bar@gmail.com");
+        toUser.setPassword("bar");
+        toUser.setId(userService.save(toUser));
+
+        accountService.saveOrUpdate(toAccount, "bar@gmail.com");
+
+    }
 
     @AfterAll
     public void cleanAccount() {
@@ -75,14 +71,10 @@ public class AccountServiceTests {
     @Test
     @Order(1)
     public void testSendMoney() {
-        account1.setUser(fromUser);
-        account1.setBalance(fromAccount.getBalance());
-        
-        account2.setUser(toUser);
-        account2.setBalance(toAccount.getBalance());
-//Test passed when I initiate `transactions = new HashSet<>();` in Account.class;
-//        accountService.sendMoney(account1, account2, new BigDecimal(200));
-        assertEquals(0, toAccount.getBalance().compareTo(new BigDecimal(200)));
+        Account account1 = accountRepository.findByUserId(fromUser.getId());
+        Account account2 = accountRepository.findByUserId(toUser.getId());
+        accountService.sendMoney(account1, account2, new BigDecimal(200), "");
+        assertEquals(0, account2.getBalance().compareTo(new BigDecimal(200)));
     }
 
     @Test
