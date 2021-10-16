@@ -57,6 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")
                 .permitAll()
                 .and()
+                .rememberMe()
+                .and()
                 .logout()
                 .permitAll();
 

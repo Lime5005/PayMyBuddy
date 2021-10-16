@@ -59,7 +59,7 @@ public class AccountController {
         boolean isFriend = false;
         boolean success = false;
         int errorType = 0;
-        boolean sent = false;
+        boolean sent;
 
         //1, Get user:
         String email = authentication.getName();
@@ -78,14 +78,7 @@ public class AccountController {
         Account fromAcc = accountService.findByUserId(fromUser.getId());
         Account toAcc = accountService.findByUserId(toUser.getId());
         if (isFriend) {
-            if (fromAcc == null) {
-                errorType = 1;
-            } else if (toAcc == null) {
-                errorType = 4;
-            } else {
-                sent = accountService.sendMoney(fromAcc, toAcc, transactionDto.getAmount(), transactionDto.getDescription());
-            }
-
+            sent = accountService.sendMoney(fromAcc, toAcc, transactionDto.getAmount(), transactionDto.getDescription());
             if (sent) {
                 success = true;
             } else {

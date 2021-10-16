@@ -25,7 +25,7 @@
         <div class="tab-content mt-5" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
                 <div class="newAccount mt-4 mb-4">
-                    <button type="button" class="btn btn-info" onclick="showAccountForm()">+ Set Balance</button>
+                    <button type="button" class="btn btn-info" onclick="showAccountForm()">Set Balance</button>
                 </div>
                 <div id="account" class="align-content-center" style="display: none">
                     <form class="form-group row ml-3" th:action="@{/account/edit}" method="POST">
@@ -46,7 +46,7 @@
             <div class="tab-pane fade" id="nav-transfer" role="tabpanel" aria-labelledby="nav-credentials-tab">
 
                 <div class="newTransfer mt-4 mb-4">
-                    <button type="button" class="btn btn-info" onclick="showTransferForm()">+ New Transaction</button>
+                    <button type="button" class="btn btn-info" onclick="showTransferForm()">New Transaction</button>
                 </div>
                 <div id="transfer" style="display: none">
                     <form class="form-group" th:action="@{/account/transfer}" method="POST">
@@ -66,11 +66,11 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="description">Description: </label>
-                                <input class="form-control" type="text" name="description" id="description" rows="3" maxlength="200">
+                                <input class="form-control" type="text" name="description" id="description" maxlength="200">
                             </div>
                             <div class="col-md-2 pl-2" style="margin-top: 2em;">
                                 <label for="transfer"></label>
-                                <button type="submit" name="transfer" class="btn btn-primary" value="Transfer">Transfer</button>
+                                <button type="submit" name="transfer" class="btn btn-success" value="Transfer">Confirm and Pay</button>
                             </div>
                         </div>
 
@@ -80,9 +80,9 @@
                     <h5>My Transactions: </h5>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-striped" id="transactionTable">
+                    <table class="table table-striped table-hover" id="transactionTable">
                         <thead>
-                        <tr>
+                        <tr class="bg-success text-white">
                             <th>Connection</th>
                             <th>Description</th>
                             <th>Amount</th>
@@ -102,7 +102,7 @@
 
             <div class="tab-pane fade" id="nav-connect" role="tabpanel" aria-labelledby="nav-credentials-tab">
                 <div class="newFriend mt-4 mb-4">
-                    <button type="button" class="btn btn-info" onclick="showFriendForm()">+ New Connection</button>
+                    <button type="button" class="btn btn-info" onclick="showFriendForm()">Add Connection</button>
                 </div>
                 <div id="friend" style="display: none;">
                     <form class="form-group" th:action="@{/friend}" method="POST">
@@ -112,11 +112,11 @@
                                        id="user">
                                 <div>
                                     <label for="friendEmail">Connect To (Email): </label>
-                                    <input class="form-control" type="email" id="friendEmail" name="friendEmail" required>
+                                    <input class="form-control" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" id="friendEmail" name="friendEmail" required>
                                 </div>
                             </div>
                             <div class="col-md-4 pl-2" style="margin-top: 2em;">
-                                <button type="submit" class="btn btn-primary" value="saveConnection">Save Connection</button>
+                                <button type="submit" class="btn btn-primary" value="saveConnection">Save</button>
                             </div>
                         </div>
                     </form>
@@ -144,9 +144,10 @@
 
             </div>
         </div>
-
+<!--        <footer class="text-center">-->
+<!--            © 2021-2022-->
+<!--        </footer>-->
     </div>
-
     <script th:src="@{/js/jquery-slim.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
