@@ -55,8 +55,8 @@
                         <div class="row mb-2 ml-3">
                             <div class="col-md-4">
                                 <label for="toEmail">To connect: </label>
-                                <select id="toEmail" name="toEmail"  class="custom-select">
-                                    <option selected>Choose...</option>
+                                <select id="toEmail" name="toEmail"  class="custom-select" required>
+                                    <option value="" selected disabled hidden>Select A Connection</option>
                                     <option th:each="friend : ${friendList}" th:value="${friend.getEmail()}" th:text="${friend.getEmail()}">Email</option>
                                 </select>
                             </div>
