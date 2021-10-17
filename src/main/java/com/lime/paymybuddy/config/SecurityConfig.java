@@ -81,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login");
     }
 
+    //Prevent having error: cookie theft attack
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
