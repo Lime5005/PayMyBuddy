@@ -74,7 +74,6 @@ public class AccountServiceImpl implements AccountService {
                 // 3, Save a record for user:
                 fromAcc.getTransactions().add(transaction);
 
-                System.out.println("Transaction is called!");
                 send = true;
             }
         }
