@@ -58,6 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .rememberMe()
+                .key("abcdEfGhijklmnopqrst123456")
+                .tokenValiditySeconds(3 * 24 * 60 * 60) //3 days token
                 .and()
                 .logout()
                 .permitAll();
