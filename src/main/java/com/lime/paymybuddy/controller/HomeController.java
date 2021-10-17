@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping
 public class HomeController {
     private UserService userService;
     private AccountService accountService;
@@ -32,7 +32,7 @@ public class HomeController {
         this.friendsService = friendsService;
     }
 
-    @GetMapping
+    @GetMapping({"/", "/home"})
     public String getHome(Authentication authentication,
                           Model model) {
 
