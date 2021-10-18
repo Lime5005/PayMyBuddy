@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Pay My Buddy</title>
 </head>
 <body class="d-flex flex-column min-vh-100 p-3 mb-2 bg-light text-black">
@@ -43,7 +43,8 @@
                     <h5>My balance: <span th:text="${#numbers.formatDecimal(balance, 0, 'COMMA', 2, 'POINT') + '€'}">0</span></h5>
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-transfer" role="tabpanel" aria-labelledby="nav-credentials-tab">
+
+            <div class="tab-pane fade" id="nav-transfer" role="tabpanel" aria-labelledby="nav-transfer-tab">
 
                 <div class="newTransfer mt-4 mb-4">
                     <button type="button" class="btn btn-info" onclick="showTransferForm()">New Transaction</button>
@@ -81,22 +82,32 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped table-hover" id="transactionTable">
-                        <tr class="bg-success text-white">
-                            <th>Connection</th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                        </tr>
-                        <tr th:each="transaction: ${transactionList}">
-                            <td th:text="${transaction.getToAccount().getUser().getUserName()}">
-                                Connections</td>
-                            <td th:text="${transaction.getDescription()}">Description</td>
-                            <td th:text="${transaction.getAmount()+'€'}">Amount</td>
-                        </tr>
+                        <thead>
+                            <tr class="bg-success text-white">
+                                <th>Connection</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="content">
+                            <tr th:each="transaction: ${transactionList}" >
+                                <td th:text="${transaction.getToAccount().getUser().getUserName()}">
+                                    Connections</td>
+                                <td th:text="${transaction.getDescription()}">Description</td>
+                                <td th:text="${transaction.getAmount()+'€'}">Amount</td>
+                            </tr>
+                        </tbody>
                     </table>
+                    <div th:if="${transactionList.totalPages > 0}" class="pagination"
+                         th:each="pageNumber : ${pageNumbers}">
+                        <a th:href="@{/home(size=${transactionList.size}, page=${pageNumber})}"
+                           th:text=${pageNumber}
+                           th:class="${pageNumber==transactionList.number + 1} ? active"></a>
+                    </div>
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="nav-connect" role="tabpanel" aria-labelledby="nav-credentials-tab">
+            <div class="tab-pane fade" id="nav-connect" role="tabpanel" aria-labelledby="nav-connect-tab">
                 <div class="newFriend mt-4 mb-4">
                     <button type="button" class="btn btn-info" onclick="showFriendForm()">Add Connection</button>
                 </div>
@@ -144,6 +155,16 @@
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script>
+<!--How to replace thymeleaf "for each" with jquery, and load only a part of the page: table?-->
+        // var $td = $("td");
+        // $td.html("bbb");
+//home?size=5&page=1
+// $( "#content" ).load( "home.html #projects li" );
+
+
+
+
+
         function showAccountForm() {
             let form = document.getElementById("account");
             if (form.style.display === "none") {
