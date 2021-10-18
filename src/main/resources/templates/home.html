@@ -109,11 +109,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="transaction: ${transactionList}" >
-                                <td th:text="${transaction.getToAccount().getUser().getUserName()}">
+                            <tr th:each="i : ${#numbers.sequence(transactionList.size() - 1, 0, -1)}" >
+                                <td th:text="${transactionList[i].getToAccount().getUser().getUserName()}">
                                     Connections</td>
-                                <td th:text="${transaction.getDescription()}">Description</td>
-                                <td th:text="${transaction.getAmount()+'€'}">Amount</td>
+                                <td th:text="${transactionList[i].getDescription()}">Description</td>
+                                <td th:text="${transactionList[i].getAmount()+'€'}">Amount</td>
                             </tr>
                         </tbody>
                     </table>
@@ -151,7 +151,6 @@
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script>
-<!--How to replace thymeleaf "for each" with jquery, and load only a part of the page: table?-->
 
         function showAccountForm() {
             let form = document.getElementById("account");
