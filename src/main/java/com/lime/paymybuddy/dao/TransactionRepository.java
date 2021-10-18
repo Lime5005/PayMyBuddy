@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
-//    List<Transaction> findTransactionsByFromAccount_Id(int id);
+    List<Transaction> findTransactionsByFromAccount_Id(int id);
     Page<Transaction> findTransactionsByFromAccount_Id(int id, Pageable pageable);
 }

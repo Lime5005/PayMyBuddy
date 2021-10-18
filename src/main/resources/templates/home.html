@@ -19,10 +19,11 @@
                 <a class="nav-item nav-link" id="nav-transfer-tab" data-toggle="tab" href="#nav-transfer" role="tab"
                    aria-controls="nav-transfer" aria-selected="false">Transfer</a>
                 <a class="nav-item nav-link" id="nav-connect-tab" data-toggle="tab" href="#nav-connect"
-                   role="tab" aria-controls="nav-connect" aria-selected="false">Connect</a>
+                   role="tab" aria-controls="nav-connect" aria-selected="false">Contact</a>
             </div>
         </nav>
         <div class="tab-content mt-5" id="nav-tabContent">
+            <!--Account Tab-->
             <div class="tab-pane fade show active" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
                 <div class="newAccount mt-4 mb-4">
                     <button type="button" class="btn btn-info" onclick="showAccountForm()">Set Balance</button>
@@ -44,12 +45,30 @@
                 </div>
             </div>
 
+            <!--Transaction Tab-->
             <div class="tab-pane fade" id="nav-transfer" role="tabpanel" aria-labelledby="nav-transfer-tab">
 
-                <div class="newTransfer mt-4 mb-4">
-                    <button type="button" class="btn btn-info" onclick="showTransferForm()">New Transaction</button>
+                <div class="newFriend mt-4 mb-4">
+                    <button type="button" class="btn btn-info" onclick="showFriendForm()">Add Connection</button>
                 </div>
-                <div id="transfer" style="display: none">
+                <div id="friend" style="display: none;">
+                    <form class="form-group" th:action="@{/friend}" method="POST">
+                        <div class="row mb-2 ml-3">
+                            <div class="col-md-8">
+                                <input type="hidden" name="user"
+                                       id="user">
+                                <div>
+                                    <label for="friendEmail">Connect To <span class="text-muted">(Example: username@domain.com)</span> </label>
+                                    <input class="form-control" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" id="friendEmail" name="friendEmail" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4 pl-2" style="margin-top: 2em;">
+                                <button type="submit" class="btn btn-primary" value="saveConnection">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="transfer" style="display: block">
                     <form class="form-group" th:action="@{/account/transfer}" method="POST">
                         <input type="hidden" name="userAccount"
                                id="user-account">
@@ -89,7 +108,7 @@
                                 <th>Amount</th>
                             </tr>
                         </thead>
-                        <tbody id="content">
+                        <tbody>
                             <tr th:each="transaction: ${transactionList}" >
                                 <td th:text="${transaction.getToAccount().getUser().getUserName()}">
                                     Connections</td>
@@ -98,36 +117,12 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div th:if="${transactionList.totalPages > 0}" class="pagination"
-                         th:each="pageNumber : ${pageNumbers}">
-                        <a th:href="@{/home(size=${transactionList.size}, page=${pageNumber})}"
-                           th:text=${pageNumber}
-                           th:class="${pageNumber==transactionList.number + 1} ? active"></a>
-                    </div>
+
                 </div>
             </div>
 
+            <!--Connection Tab-->
             <div class="tab-pane fade" id="nav-connect" role="tabpanel" aria-labelledby="nav-connect-tab">
-                <div class="newFriend mt-4 mb-4">
-                    <button type="button" class="btn btn-info" onclick="showFriendForm()">Add Connection</button>
-                </div>
-                <div id="friend" style="display: none;">
-                    <form class="form-group" th:action="@{/friend}" method="POST">
-                        <div class="row mb-2 ml-3">
-                            <div class="col-md-8">
-                                <input type="hidden" name="user"
-                                       id="user">
-                                <div>
-                                    <label for="friendEmail">Connect To <span class="text-muted">(Example: username@domain.com)</span> </label>
-                                    <input class="form-control" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" id="friendEmail" name="friendEmail" required>
-                                </div>
-                            </div>
-                            <div class="col-md-4 pl-2" style="margin-top: 2em;">
-                                <button type="submit" class="btn btn-primary" value="saveConnection">Save</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
                 <div class="mt-4">
                     <h5>My Connections: </h5>
                 </div>
@@ -151,31 +146,15 @@
             <p>PayMyBuddy © 2021 - 2022</p>
         </footer>
     </div>
-    <script th:src="@{/js/jquery-slim.min.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script>
 <!--How to replace thymeleaf "for each" with jquery, and load only a part of the page: table?-->
-        // var $td = $("td");
-        // $td.html("bbb");
-//home?size=5&page=1
-// $( "#content" ).load( "home.html #projects li" );
-
-
-
-
 
         function showAccountForm() {
             let form = document.getElementById("account");
-            if (form.style.display === "none") {
-                form.style.display = "block";
-            } else {
-                form.style.display = "none";
-            }
-        }
-
-        function showTransferForm() {
-            let form = document.getElementById("transfer");
             if (form.style.display === "none") {
                 form.style.display = "block";
             } else {

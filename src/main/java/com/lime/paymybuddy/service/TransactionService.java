@@ -12,4 +12,5 @@ public interface TransactionService {
     List<Transaction> findAll();
     Optional<Transaction> findById(int id);
     Page<Transaction> findTransactionsByFromAccount_Id(int id, PageRequest pageRequest);
+    List<Transaction> findTransactionsByFromAccount_Id(int id);
 }

@@ -38,29 +38,16 @@ public class HomeController {
 
     @GetMapping({"/", "/home"})
     public String getHome(Authentication authentication,
-                          Model model, @RequestParam("page") Optional<Integer> page,
-                          @RequestParam("size") Optional<Integer> size) {
+                          Model model) {
 
         //The name has been override as email:
         DaoUser user = userService.findByEmail(authentication.getName());
         String name = user.getUserName();
         Set<DaoUser> myFriends = friendsService.findAllMyFriends(user.getId());
 
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(5);
-
         Account account = accountService.findByUserId(user.getId());
 
-        Page<Transaction> transactionList = transactionService.findTransactionsByFromAccount_Id(account.getId(), PageRequest.of(currentPage - 1, pageSize));
-        int totalPages = transactionList.getTotalPages();
-
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-        model.addAttribute("transactionList", (account == null) ? new ArrayList<>() : transactionList);
+        model.addAttribute("transactionList", (account == null) ? new ArrayList<>() : transactionService.findTransactionsByFromAccount_Id(account.getId()));
         model.addAttribute("friendList", myFriends == null ? new HashSet<>() : myFriends);
 
         model.addAttribute("message", "Hi " + name);

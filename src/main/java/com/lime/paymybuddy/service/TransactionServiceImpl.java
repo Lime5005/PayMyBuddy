@@ -43,4 +43,9 @@ public class TransactionServiceImpl implements TransactionService {
     public Page<Transaction> findTransactionsByFromAccount_Id(int id, PageRequest pageRequest) {
         return transactionRepository.findTransactionsByFromAccount_Id(id, pageRequest);
     }
+
+    @Override
+    public List<Transaction> findTransactionsByFromAccount_Id(int id) {
+        return transactionRepository.findTransactionsByFromAccount_Id(id);
+    }
 }
