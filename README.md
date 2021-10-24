@@ -19,6 +19,17 @@ Openclassrooms Project6
   <img width="1317" alt="home" src="https://user-images.githubusercontent.com/65612959/138293104-adf921a3-df21-412c-abc0-7817dff42778.png">
   
 
-Note: Une fois un compte a été créé, il faut mettre au moins 1€ dedans pour activer le compte.  
-  
-  
+#### Note: 
+- Une fois un compte a été créé, il faut mettre au moins 1€ dedans pour activer le compte.  
+
+- Pour démarrer l'application, ajouter `application.properties` sous `resources`:
+  ```properties
+  spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+  spring.jpa.hibernate.ddl-auto=update
+  spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
+  spring.datasource.url=jdbc:mysql://localhost:3306/pay_my_buddy?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&characterEncoding=utf8&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+  spring.datasource.username=your_username
+  spring.datasource.password=your_password
+  spring.jpa.open-in-view=false
+  server.error.whitelabel.enabled=false
+  ```
