@@ -75,12 +75,7 @@ public class AccountController {
 
         if (toAcc == null) {
             errorType = 4;
-            model.addAttribute("success", false);
-            model.addAttribute("errorType", errorType);
-            return "result";
-        }
-
-        if (fromAcc == null) {
+        } else if (fromAcc == null) {
             errorType = 1;
         } else {
             //4, Check if friend is in connections:
