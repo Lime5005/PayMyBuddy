@@ -7,7 +7,6 @@ import com.lime.paymybuddy.service.AccountService;
 import com.lime.paymybuddy.service.TransactionService;
 import com.lime.paymybuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
