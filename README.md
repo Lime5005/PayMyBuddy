@@ -33,3 +33,8 @@ Openclassrooms Project6
   spring.jpa.open-in-view=false
   server.error.whitelabel.enabled=false
   ```
+  
+#### Jacoco test couverture sur la couche du service:   
+  
+  <img width="1035" alt="jacoco_p6" src="https://user-images.githubusercontent.com/65612959/139065464-314d74c7-1de9-48da-bac9-161729bd1ef0.png">
+  
