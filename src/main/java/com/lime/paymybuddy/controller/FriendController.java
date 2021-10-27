@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/friend")
 public class FriendController {
 
-    private AccountService accountService;
     private UserService userService;
     private FriendsService friendsService;
 
-    public FriendController(AccountService accountService, UserService userService, FriendsService friendsService) {
-        this.accountService = accountService;
+    public FriendController(UserService userService, FriendsService friendsService) {
         this.userService = userService;
         this.friendsService = friendsService;
     }

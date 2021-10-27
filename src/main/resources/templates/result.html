@@ -12,25 +12,25 @@
     <div th:replace="~{/navbar::topbar}"></div>
 
     <div class="container justify-content-center w-50 p-3" style="margin-top: 5em;">
-        <div class="alert alert-success fill-parent" th:if="${success}">
+        <div class="alert alert-success" th:if="${success}">
             <h1 class="display-5">Success</h1>
             <span>Changes were saved successfully. Click <a id="successResult" th:href="@{/home}">here</a> to continue.</span>
         </div>
-        <div class="alert alert-danger fill-parent" th:if="${not success} and ${errorType == 1}">
+        <div class="alert alert-danger" th:if="${not success} and ${errorType == 1}">
             <h1 class="display-5">Error</h1>
-            <span>Your account was not created. Click <a id="errorResult1" th:href="@{/home}">here</a> to continue.</span>
+            <span>Your account was not activated. Click <a id="errorResult1" th:href="@{/home}">here</a> to continue.</span>
         </div>
-        <div class="alert alert-danger fill-parent" th:if="${not success} and ${errorType == 2}">
+        <div class="alert alert-danger" th:if="${not success} and ${errorType == 2}">
             <h1 class="display-5">Error</h1>
             <span>Connection not found. Add new connection? Click <a id="errorResult2" th:href="@{/home}">here</a> to continue.</span>
         </div>
-        <div class="alert alert-danger fill-parent" th:if="${not success} and ${errorType == 3}" >
+        <div class="alert alert-danger" th:if="${not success} and ${errorType == 3}" >
             <h1 class="display-5">Error</h1>
             <span>Balance not enough. Click <a id="errorResult3" th:href="@{/home}">here</a> to continue.</span>
         </div>
-        <div class="alert alert-danger fill-parent" th:if="${not success} and ${errorType == 4}" >
+        <div class="alert alert-danger" th:if="${not success} and ${errorType == 4}" >
             <h1 class="display-5">Error</h1>
-            <span>The buddy is not our user / has no account yet. Click <a id="errorResult4" th:href="@{/home}">here</a> to continue.</span>
+            <span>The buddy is not our user OR has no account yet. Click <a id="errorResult4" th:href="@{/home}">here</a> to continue.</span>
         </div>
     </div>
 

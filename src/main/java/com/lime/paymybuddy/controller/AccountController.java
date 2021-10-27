@@ -69,21 +69,35 @@ public class AccountController {
         String toEmail = transactionDto.getToEmail();
         DaoUser toUser = userService.findByEmail(toEmail);
 
-        //3, Check if friend is in connections:
-        if (friendsService.isFriend(fromUser.getId(), toUser.getId())) {
-            isFriend = true;
-        }
-
-        //4, Check if both accounts exits, then sendMoney:
+        //3, Check if both accounts exist:
         Account fromAcc = accountService.findByUserId(fromUser.getId());
         Account toAcc = accountService.findByUserId(toUser.getId());
-        if (isFriend) {
-            sent = accountService.sendMoney(fromAcc, toAcc, transactionDto.getAmount(), transactionDto.getDescription());
-            if (sent) {
-                success = true;
-            } else {
-                errorType = 3;
+
+        if (toAcc == null) {
+            errorType = 4;
+            model.addAttribute("success", false);
+            model.addAttribute("errorType", errorType);
+            return "result";
+        }
+
+        if (fromAcc == null) {
+            errorType = 1;
+        } else {
+            //4, Check if friend is in connections:
+            if (friendsService.isFriend(fromUser.getId(), toUser.getId())) {
+                isFriend = true;
             }
+
+            //5, sendMoney:
+            if (isFriend) {
+                sent = accountService.sendMoney(fromAcc, toAcc, transactionDto.getAmount(), transactionDto.getDescription());
+                if (sent) {
+                    success = true;
+                } else {
+                    errorType = 3;
+                }
+            }
+
         }
 
         model.addAttribute("success", success);

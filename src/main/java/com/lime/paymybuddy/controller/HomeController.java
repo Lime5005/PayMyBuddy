@@ -2,24 +2,20 @@ package com.lime.paymybuddy.controller;
 
 import com.lime.paymybuddy.model.Account;
 import com.lime.paymybuddy.model.DaoUser;
-import com.lime.paymybuddy.model.Transaction;
 import com.lime.paymybuddy.service.AccountService;
 import com.lime.paymybuddy.service.FriendsService;
 import com.lime.paymybuddy.service.TransactionService;
 import com.lime.paymybuddy.service.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 @RequestMapping
