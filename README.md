@@ -16,7 +16,8 @@ Openclassrooms Project6
   
 - Home:
   
-  <img width="1317" alt="home" src="https://user-images.githubusercontent.com/65612959/138293104-adf921a3-df21-412c-abc0-7817dff42778.png">
+  <img width="1236" alt="home" src="https://user-images.githubusercontent.com/65612959/139069938-70d5e3d6-baf1-4072-8435-4d301efabce9.png">
+
   
 
 #### Note: 
@@ -37,4 +38,4 @@ Openclassrooms Project6
 #### Jacoco test couverture sur la couche du service:   
   
   <img width="1035" alt="jacoco_p6" src="https://user-images.githubusercontent.com/65612959/139065464-314d74c7-1de9-48da-bac9-161729bd1ef0.png">
-  
+
