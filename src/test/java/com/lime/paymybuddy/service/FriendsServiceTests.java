@@ -69,8 +69,8 @@ public class FriendsServiceTests {
     @Test
     @Order(2)
     public void testIsFriend() {
-        Boolean friend = friendsService.isFriend(user1.getId(), user2.getId());
-        assertEquals(true, friend);
+        Integer friend = friendsService.isFriend(user1.getId(), user2.getId());
+        assertEquals(1, friend);
     }
 
     @Test

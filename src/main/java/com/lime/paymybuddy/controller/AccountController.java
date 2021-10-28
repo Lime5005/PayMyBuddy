@@ -79,7 +79,7 @@ public class AccountController {
             errorType = 1;
         } else {
             //4, Check if friend is in connections:
-            if (friendsService.isFriend(fromUser.getId(), toUser.getId())) {
+            if (friendsService.isFriend(fromUser.getId(), toUser.getId()) == 1) {
                 isFriend = true;
             }
 

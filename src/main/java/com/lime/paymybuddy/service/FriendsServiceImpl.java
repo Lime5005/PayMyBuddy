@@ -47,22 +47,15 @@ public class FriendsServiceImpl implements FriendsService {
     }
 
     @Override
-    public Boolean isFriend(int id1, int id2) {
-        boolean check = false;
+    public Integer isFriend(int id1, int id2) {
+        Integer friend = 0;
         Optional<DaoUser> user1 = userRepository.findById(id1);
         Optional<DaoUser> user2 = userRepository.findById(id2);
-        List<Friends> friends = friendsRepository.findAll();
         if (user1.isPresent() && user2.isPresent()) {
-            for (Friends friend : friends) {
-                Integer idFriend = friend.getFriend().getId();
-                Integer idUser = friend.getUser().getId();
-                if ((idFriend == id1 && idUser == id2) || idFriend == id2 && idUser == id1) {
-                    check = true;
-                    break;
-                }
-            }
+            friend = friendsRepository.isFriend(id1, id2);
+
         }
-        return check;
+        return friend;
     }
 
     /**

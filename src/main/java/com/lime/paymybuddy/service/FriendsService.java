@@ -11,6 +11,6 @@ public interface FriendsService {
     Friends findByFriend_Id(int id);
     List<Friends> findAllByUser_Id(int id);
     Integer deleteByFriend_Id(int id);
-    Boolean isFriend(int id1, int id2);
+    Integer isFriend(int id1, int id2);
     Set<DaoUser> findAllMyFriends(int id);
 }
